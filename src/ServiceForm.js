@@ -1,4 +1,7 @@
-import React, { useState} from 'react';
+import React, { useContext, useState} from 'react';
+
+
+import { NameContext,NumberContext,EmailContext,ServiceContext,ModeContext} from './App';
 
 
 const ServiceForm = () => {
@@ -17,6 +20,26 @@ termsAgreed: false
   });
   const [paymentSuccess, setPaymentSuccess] = useState(false);
 
+
+  const [name,setName] = useContext(NameContext)
+
+  const [number,setNumber] = useContext(NumberContext)
+
+  const [email,setEmail] = useContext(EmailContext)
+
+  const [service,setService] = useContext(ServiceContext)
+
+
+  const [mode,setMode] = useContext(ModeContext)
+  
+
+  setName(formData.customerName)
+  setNumber(formData.contactNumber)
+  setEmail(formData.emailAddress)
+  setService(formData.serviceType)
+
+  setMode(formData.paymentMethod)
+
   const handleChange = (e) => {
     const { name, value,type,checked } = e.target;
     const val = type === 'checkbox' ? checked : value;
@@ -24,6 +47,8 @@ termsAgreed: false
       ...prevState,
       [name]: val
     }));
+
+
   };
 
   const handleContactChange = (index, e) => {
@@ -43,34 +68,41 @@ termsAgreed: false
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-        // Simulate API call to book and pay
-        const response = await fetch("http://localhost:5000/order", {
-            method: "POST",
-            body: JSON.stringify(formData),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        if (response.ok) {
-            // Payment successful, redirect to confirmation page
-            window.location.href = '/confirmation'; // Change this to your confirmation page URL
-        } else {
-            // Handle payment error
-            alert('Payment failed. Please try again.');
-        }
-    } catch (error) {
-        // Handle API call error
-        console.error('Error:', error);
-        alert('Something went wrong. Please try again later.');
-    }
-  };
+  
+
+  
+  
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+
+
+  //   try {
+  //       // Simulate API call to book and pay
+  //       const response = await fetch("http://localhost:5000/order", {
+  //           method: "POST",
+  //           body: JSON.stringify(formData),
+  //           headers: {
+  //               "Content-Type": "application/json",
+  //           },
+  //       });
+  //       if (response.ok) {
+  //           // Payment successful, redirect to confirmation page
+  //           window.location.href = '/confirmation'; // Change this to your confirmation page URL
+  //       } else {
+  //           // Handle payment error
+  //           alert('Payment failed. Please try again.');
+  //       }
+  //   } catch (error) {
+  //       // Handle API call error
+  //       console.error('Error:', error);
+  //       alert('Something went wrong. Please try again later.');
+  //   }
+  // };
 
 
   return (
-    <form onSubmit={handleSubmit} className='form-container'>
+    <form  className='form-container'>
       <label className='individual-field'>
         Customer Name:
         <input style={{marginLeft:'20px'}} type="text" name="customerName" value={formData.customerName} onChange={handleChange} />
@@ -137,7 +169,7 @@ termsAgreed: false
         />
         I agree to the terms and conditions
       </label>
-      <button type="submit">Book and Pay</button>
+      {/* <button type="submit">Book and Pay</button> */}
     </form>
   );
 };
